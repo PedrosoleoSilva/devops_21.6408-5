@@ -17,42 +17,24 @@ pipeline{
 pipeline {
     agent any
 
-    options {
-        // Defina as opções do pipeline, se necessário
-        skipStagesAfterUnstable()
-    }
-
-    environment {
-        // Defina as variáveis de ambiente necessárias
-        NODEJS_HOME = tool name: 'node_modules', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-    }
+    tools {nodejs 'node'}
 
     stages {
-        stage('Declarative: Checkout SCM') {
-            steps {
-                // Se necessário, adicione mais passos nesta etapa
-                checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Adicione comandos para a construção da aplicação
+        stage('test'){
+            steps{
                 sh 'npm install'
+                sh 'npm test'
             }
         }
-
-        // Adicione mais estágios conforme necessário para testes, deploy, etc.
-    }
-
-    post {
-        success {
-            // Adicione ações a serem executadas em caso de sucesso (opcional)
-            echo 'Pipeline executada com sucesso!'
+        stage('build') {
+            steps {
+                sh 'docker-compose build' 
+            }
         }
-        failure {
-            // Adicione ações a serem executadas em caso de falha (opcional)
-            echo 'Pipeline falhou!'
+         stage('up') {
+            steps {
+                sh 'docker-compose up'  
+            }
         }
-    }
+}
 }
