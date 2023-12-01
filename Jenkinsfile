@@ -24,7 +24,7 @@ pipeline {
 
     environment {
         // Defina as variáveis de ambiente necessárias
-        NODEJS_HOME = tool name: 'Nome_da_Instalacao_NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        NODEJS_HOME = tool name: 'node_modules', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
     }
 
     stages {
